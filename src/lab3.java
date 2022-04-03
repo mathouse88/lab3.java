@@ -2,7 +2,7 @@
 // Mateusz Sliwa, 01.04.2022
 
 class Producent extends Thread {
-    private Bufor _buf;
+    private final Bufor _buf;
 
     public Producent(Bufor b) {
         _buf = b;
@@ -18,7 +18,7 @@ class Producent extends Thread {
 }
 
 class Konsument extends Thread {
-    private Bufor _buf;
+    private final Bufor _buf;
 
     public Konsument(Bufor b) {
         _buf = b;
