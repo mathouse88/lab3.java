@@ -38,7 +38,7 @@ class Bufor {
     private boolean czyDostepny = false;
 
     public synchronized void put(int wartosc) {
-        while (czyDostepny == true) {
+        while (czyDostepny) {
             try { wait(); }
             catch (Exception e) { System.out.println(e); }
         }
@@ -49,7 +49,7 @@ class Bufor {
     }
 
     public synchronized void get() {
-        while (czyDostepny == false) {
+        while (!czyDostepny) {
             try { wait(); }
             catch (Exception e) { System.out.println(e); }
         }
