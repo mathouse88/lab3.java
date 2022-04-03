@@ -6,13 +6,13 @@ class Producent extends Thread {
 
     public Producent(Bufor b) {
         _buf = b;
-    }
+    }     // inicjalizacja bufora
 
     public void run() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 1; i < 101; i++) {         // petla od 0 do 100
             try { sleep(50); }
             catch (Exception e) { System.out.println(e); }
-            _buf.put(i);
+            _buf.put(i);                        // utworzenie elementu i , start od 0
         }
     }
 }
@@ -20,15 +20,13 @@ class Producent extends Thread {
 class Konsument extends Thread {
     private final Bufor _buf;
 
-    public Konsument(Bufor b) {
-        _buf = b;
-    }
+    public Konsument(Bufor b) { _buf = b; }     // inicjalizacja bufora
 
     public void run() {
-        for (int i = 0; i < 100; i++) {
+        for (int i = 1; i < 101; i++) {         // petla od 0 do 100
             try { sleep(50); }
             catch (Exception e) { System.out.println(e); }
-            _buf.get();
+            _buf.get();                         // pobranie elementu i, start od 0
         }
     }
 }
@@ -38,34 +36,36 @@ class Bufor {
     private boolean czyDostepny = false;
 
     public synchronized void put(int wartosc) {
-        while (czyDostepny) {
+        while (czyDostepny) {                           // warunek oczekiwania
             try { wait(); }
             catch (Exception e) { System.out.println(e); }
         }
-        System.out.println("Producent " + (wartosc+1));
-        zawartoscBufora = wartosc;
-        czyDostepny = true;
-        notify();
+        System.out.println("Producent " + (wartosc));   // wyswietl aktualna wartosc
+        zawartoscBufora = wartosc;                      // podstaw wartosc pod zawartoscBufora
+        czyDostepny = true;                             // zmien wartosc dostepnosci bufora na true
+        notify();                                       // obudz uspiony watek
     }
 
     public synchronized void get() {
-        while (!czyDostepny) {
+        while (!czyDostepny) {                          // warunek oczekiwania
             try { wait(); }
             catch (Exception e) { System.out.println(e); }
         }
-        System.out.println("Konsument " + (zawartoscBufora+1) + "\n");
-        czyDostepny = false;
-        notify();
+        System.out.println("Konsument " + (zawartoscBufora) + "\n");    // wyswietl zawartosc bufora
+        czyDostepny = false;                            // zmien wartosc dostepnosci bufora na false
+        notify();                                       // obudz uspiony watek
     }
 }
 
 public class lab3 {
     public static void main(String[] args) {
 
+        // utworzenie obiektow
         Bufor b = new Bufor();
         Producent p = new Producent(b);
         Konsument k = new Konsument(b);
 
+        // start watkow
         p.start();
         k.start();
     }
